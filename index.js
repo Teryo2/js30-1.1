@@ -1,26 +1,54 @@
-const button = document.querySelector('button');
+const obj = {  
+    forest : {    file : 'forest.jpg',   sound: 'forest.mp3'},
+    solovey : {    file : 'solovey.jpg',  sound: 'solovey.mp3'},
+    drozd : {      file : 'drozd.jpg',    sound: 'drozd.mp3' },
+    zarynka : {  file : 'zarynka.jpg',  sound: 'zarynka.mp3'},
+    javoronok : { file : 'javoronok.jpg',sound: 'javoronok.mp3'},
+    slavka : {     file : 'slavka.jpg',   sound: 'slavka.mp3'}
+};
 
-function toggleBtn() {
-  button.classList.toggle('pause');
-}
-button.addEventListener('click', toggleBtn);
+const links = document.querySelectorAll('[data-item]');
+const button = document.querySelector('.play');
+const image = document.querySelector('.main');
 
-const portfolioButt = document.querySelector(".nav-list");
-const portfolioImg = document.querySelector(".img-container");
+let isPlaying = false;
 
+const audio = new Audio();
+let currentSound = `./assest/audio/${obj.forest.sound}`;
 
-const choiceActive = (event) =>{
-    portfolioButt.querySelectorAll(".nav-item")
-    .forEach( but =>{
-        but.classList.remove("active");
-    })
-    if(event.target.classList.contains("nav-item")){
-        event.target.classList.add("active");
+window.addEventListener('load', preloadImages);
+
+links.forEach((link, index) => {
+    link.addEventListener('click', () => {
+        image.style.background = `url(./assest/img/${obj[link.dataset.item].file})`;
+        currentSound = `./assest/audio/${obj[link.dataset.item].sound}`;
+        links.forEach((b) => b.classList.remove('active'));
+        link.classList.add('active');
+        
+        isPlaying = false;
+        playAudio();
+    });
+});
+
+button.addEventListener('click', playAudio);
+
+function playAudio() {
+    if(!isPlaying) {
+        audio.src = currentSound;
+        audio.currentTime = 0;
+        audio.play();
+        isPlaying = true;
+        button.classList.add('pause');
+    } else {
+        audio.pause();
+        isPlaying = false;
+        button.classList.remove('pause');
     }
-}
+};
 
-portfolioButt.addEventListener("click", choiceActive);
-
-function l_image (a) {
-    document.example_img.src = a;
-}
+function preloadImages() {
+    links.forEach((button, index)=> {
+        const img = new Image();
+        img.src = `./assets/img/${obj[button.dataset.item].file}`;
+    })
+};

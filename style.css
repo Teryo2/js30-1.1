@@ -98,13 +98,14 @@ body {
 }
   
 .main {
-    position: relative;
+    display: flex;
     justify-content: center;
     align-items: center;
-    height: 1100px;
+    height: calc(100vh - 120px);
     min-height: 280px;
+    background-image: url("./assest/img/forest.jpg");
     background-size: cover;
-}
+  }
 
 .img-container {
     position: relative;
